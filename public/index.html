@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tallercito.mx | Blog & Optimizador</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans">
 
@@ -27,26 +28,37 @@
                 <p class="mt-4 text-slate-600">Cómo la optimización matemática está salvando carteras en los talleres de México...</p>
                 <a href="#" class="inline-block mt-4 text-amber-600 font-bold">Leer más →</a>
             </article>
-            </div>
+        </div>
     </header>
 
     <section id="optimizador" class="bg-slate-200 py-16 px-4">
-        <div class="container mx-auto max-w-4xl bg-white p-8 rounded-2xl shadow-xl">
+        <div class="container mx-auto max-w-5xl bg-white p-8 rounded-2xl shadow-xl">
             <h2 class="text-3xl font-bold mb-6 text-center text-slate-800">El Laboratorio de Corte</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="md:col-span-1">
                     <label class="block text-sm font-bold mb-2">Medidas del Tablero (mm)</label>
-                    <input type="text" placeholder="2440 x 1220" class="w-full p-3 border rounded-lg mb-4">
-                    <label class="block text-sm font-bold mb-2">Piezas a cortar</label>
-                    <textarea placeholder="Ej: 500x300, 10" class="w-full p-3 border rounded-lg h-32"></textarea>
-                    <button class="w-full bg-slate-900 text-white py-4 rounded-lg font-bold mt-4 hover:bg-slate-800">OPTIMIZAR AHORA</button>
+                    <input id="medidaTablero" type="text" placeholder="2440 x 1220" class="w-full p-3 border rounded-lg mb-4 shadow-sm focus:ring-2 focus:ring-amber-500 outline-none">
+                    
+                    <label class="block text-sm font-bold mb-2">Piezas a cortar (Largo x Ancho, Cantidad)</label>
+                    <textarea id="listaPiezas" placeholder="Ej: 500x300, 10" class="w-full p-3 border rounded-lg h-32 shadow-sm focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                    
+                    <button id="btnOptimizar" class="w-full bg-slate-900 text-white py-4 rounded-lg font-bold mt-4 hover:bg-slate-800 transition-colors shadow-lg">
+                        OPTIMIZAR AHORA
+                    </button>
                 </div>
-                <div class="bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300">
-                    <p class="text-slate-400 text-sm text-center px-4">Aquí aparecerá tu mapa de corte optimizado</p>
+
+                <div class="md:col-span-2">
+                    <div class="bg-slate-100 rounded-lg shadow-inner overflow-auto flex flex-col items-center p-4 border-2 border-dashed border-slate-300 min-h-[400px]">
+                        <canvas id="canvasCorte" class="max-w-full h-auto bg-white shadow-md"></canvas>
+                        <div id="resultadoInfo" class="mt-4 text-sm text-slate-600 font-mono text-center">
+                            Aquí aparecerá tu mapa de corte optimizado
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <script src="app.js"></script>
 </body>
 </html>
