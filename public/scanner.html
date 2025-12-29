@@ -1,0 +1,19 @@
+<script src="https://unpkg.com/html5-qrcode"></script>
+<body class="bg-slate-900 text-white p-4">
+    <div id="reader" class="rounded-3xl overflow-hidden shadow-2xl border-4 border-amber-500"></div>
+    <div id="infoCard" class="hidden mt-6 bg-white text-slate-900 p-6 rounded-2xl shadow-xl"></div>
+    <script>
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (id) => {
+            db.collection("piezas").doc(id).get().then(doc => {
+                const p = doc.data();
+                document.getElementById('infoCard').innerHTML = `
+                    <h2 class="font-black text-2xl">${p.nombre}</h2>
+                    <p class="text-amber-600 font-bold">${p.medidas}</p>
+                    <p class="text-sm">Destino: ${p.proyecto}</p>
+                `;
+                document.getElementById('infoCard').classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
