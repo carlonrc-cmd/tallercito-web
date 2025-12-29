@@ -1,17 +1,13 @@
-// public/auth.js (Actualizado con Roles)
-
 async function actualizarInterfaz(user) {
-    document.getElementById('btnLogin').classList.add('hidden');
+    document.getElementById('btnLogin')?.classList.add('hidden');
     const info = document.getElementById('userInfo');
     
-    // Consultar el rol del usuario en la base de datos
     const userDoc = await db.collection("usuarios").doc(user.uid).get();
-    let rol = "MAESTRO"; // Rol por defecto
-
+    let rol = "MAESTRO";
+    
     if (userDoc.exists && userDoc.data().rol) {
         rol = userDoc.data().rol;
     } else {
-        // Si es nuevo, lo registramos como MAESTRO
         await db.collection("usuarios").doc(user.uid).set({
             nombre: user.displayName,
             email: user.email,
@@ -19,15 +15,22 @@ async function actualizarInterfaz(user) {
         }, { merge: true });
     }
 
-    // Mostrar el rol en la interfaz
-    info.innerText = `${rol}: ${user.displayName.toUpperCase()}`;
-    info.classList.remove('hidden');
-    
-    // Si es ADMIN, podrías mostrar botones extra
-    if (rol === "ADMIN") {
-        console.log("Acceso de administrador concedido");
-        // Aquí podrías activar un panel de estadísticas globales
+    if(info) {
+        info.innerText = `${rol}: ${user.displayName.toUpperCase()}`;
+        info.classList.remove('hidden');
     }
 
-    document.getElementById('userDashboard').classList.remove('hidden');
+    // LÓGICA DE ADMIN: Mostrar panel de control
+    if (rol === "ADMIN") {
+        document.body.classList.add('es-admin');
+        console.log("Acceso de Administrador activado");
+        // Aquí podrías mostrar un botón oculto para escribir en el blog
+        const btnAdmin = document.createElement('button');
+        btnAdmin.innerText = "➕ NUEVO POST";
+        btnAdmin.className = "bg-red-600 text-white px-3 py-1 rounded-full text-xs ml-4";
+        btnAdmin.onclick = () => abrirEditorBlog(); // Función para crear contenido
+        info.appendChild(btnAdmin);
+    }
+
+    document.getElementById('userDashboard')?.classList.remove('hidden');
 }
