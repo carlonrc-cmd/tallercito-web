@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tallercito.mx | Blog & Optimizador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans">
+
+    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tighter">TALLERCITO<span class="text-amber-500">.MX</span></h1>
+            <div class="space-x-4 text-sm">
+                <a href="#blog" class="hover:text-amber-500">Blog</a>
+                <a href="#optimizador" class="bg-amber-500 text-slate-900 px-3 py-2 rounded font-bold">Herramienta</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="blog" class="container mx-auto py-12 px-4">
+        <h2 class="text-4xl font-black mb-8">Vanguardia & Fierros</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <article class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <span class="text-amber-600 text-xs font-bold uppercase">Tendencias 2025</span>
+                <h3 class="text-2xl font-bold mt-2">El fin de la esquina de retazos</h3>
+                <p class="mt-4 text-slate-600">Cómo la optimización matemática está salvando carteras en los talleres de México...</p>
+                <a href="#" class="inline-block mt-4 text-amber-600 font-bold">Leer más →</a>
+            </article>
+            </div>
+    </header>
+
+    <section id="optimizador" class="bg-slate-200 py-16 px-4">
+        <div class="container mx-auto max-w-4xl bg-white p-8 rounded-2xl shadow-xl">
+            <h2 class="text-3xl font-bold mb-6 text-center text-slate-800">El Laboratorio de Corte</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold mb-2">Medidas del Tablero (mm)</label>
+                    <input type="text" placeholder="2440 x 1220" class="w-full p-3 border rounded-lg mb-4">
+                    <label class="block text-sm font-bold mb-2">Piezas a cortar</label>
+                    <textarea placeholder="Ej: 500x300, 10" class="w-full p-3 border rounded-lg h-32"></textarea>
+                    <button class="w-full bg-slate-900 text-white py-4 rounded-lg font-bold mt-4 hover:bg-slate-800">OPTIMIZAR AHORA</button>
+                </div>
+                <div class="bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300">
+                    <p class="text-slate-400 text-sm text-center px-4">Aquí aparecerá tu mapa de corte optimizado</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
