@@ -7,9 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#f59e0b">
 </head>
@@ -19,7 +21,7 @@
             <h1 class="text-xl font-bold italic tracking-tighter">TALLERCITO<span class="text-amber-500">.MX</span></h1>
             <div id="authSection" class="flex items-center gap-4">
                 <button id="btnLogin" onclick="loginConGoogle()" class="bg-amber-500 text-slate-900 px-4 py-2 rounded-full font-bold text-xs uppercase hover:scale-105 transition">Acceso Maestro</button>
-                <div id="userInfo" class="hidden text-xs font-bold text-amber-500"></div>
+                <div id="userInfo" class="hidden text-xs font-bold text-amber-500 uppercase"></div>
             </div>
         </div>
     </nav>
@@ -31,21 +33,25 @@
     </header>
 
     <section id="optimizador" class="bg-slate-200 py-12 px-4">
-        <div class="container mx-auto max-w-6xl bg-white p-8 rounded-3xl shadow-xl grid md:grid-cols-3 gap-8 border border-white">
+        <div class="container mx-auto max-w-6xl bg-white p-8 rounded-3xl shadow-xl grid md:grid-cols-3 gap-8">
             <div class="md:col-span-1">
                 <label class="block text-xs font-bold mb-2 uppercase text-slate-500">Tablero (Largo x Ancho mm)</label>
                 <input id="medidaTablero" type="text" value="2440x1220" class="w-full p-3 border-2 border-slate-100 rounded-xl mb-4 font-mono">
+                
                 <label class="block text-xs font-bold mb-2 uppercase text-slate-500">Piezas (Largo x Ancho, Cantidad)</label>
                 <textarea id="listaPiezas" placeholder="600x400, 4" class="w-full p-3 border-2 border-slate-100 rounded-xl h-32 font-mono"></textarea>
-                <button id="btnOptimizar" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase shadow-lg">Optimizar</button>
+                
+                <button id="btnOptimizar" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase">Optimizar</button>
+                
                 <div class="grid grid-cols-2 gap-2 mt-4">
-                    <button id="btnDescargar" class="border-2 border-slate-900 py-2 rounded-xl font-bold text-xs uppercase">PDF Pro</button>
-                    <button onclick="window.location.href='ar.html'" class="bg-amber-500 text-slate-900 py-2 rounded-xl font-bold text-xs uppercase flex items-center justify-center gap-2">🤳 AR</button>
+                    <button id="btnDescargar" class="border-2 border-slate-900 py-2 rounded-xl font-bold text-xs uppercase">PDF Etiquetas</button>
+                    <button onclick="window.location.href='ar.html'" class="bg-amber-500 text-slate-900 py-2 rounded-xl font-bold text-xs uppercase">🤳 Modo AR</button>
                 </div>
             </div>
+            
             <div class="md:col-span-2 flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-4 border-2 border-dashed border-slate-300 min-h-[400px]">
                 <canvas id="canvasCorte" class="bg-white shadow-2xl max-w-full"></canvas>
-                <div id="resultadoInfo" class="mt-4 w-full grid grid-cols-2 gap-2"></div>
+                <div id="resultadoInfo" class="mt-4 w-full text-center font-bold"></div>
             </div>
         </div>
     </section>
