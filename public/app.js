@@ -2,23 +2,28 @@ let planActual = null;
 let indiceTableroActual = 0;
 
 window.addEventListener('load', () => {
-    document.getElementById('btnOptimizar').onclick = optimizarCorte;
-    document.getElementById('btnDescargar').onclick = descargarPDF;
+    const bOpt = document.getElementById('btnOptimizar');
+    const bPdf = document.getElementById('btnDescargar');
+    if (bOpt) bOpt.onclick = optimizarCorte;
+    if (bPdf) bPdf.onclick = descargarPDF;
 });
 
 async function optimizarCorte() {
-    const nomProy = document.getElementById('nombreProyecto').value || "Sin Nombre";
+    const canvas = document.getElementById('canvasCorte');
+    const nomProy = document.getElementById('nombreProyecto').value || "Proyecto Nuevo";
     const [lT, aT] = document.getElementById('medidaTablero').value.split('x').map(Number);
     const lineas = document.getElementById('listaPiezas').value.split('\n');
 
     let piezas = [];
     lineas.forEach(l => {
-        const p = l.split(',');
-        if (p.length < 2) return;
-        const [w, h] = p[0].split('x').map(n => parseInt(n.trim()));
-        const cant = parseInt(p[1]) || 1;
-        const nombre = (p[2] || "Pieza").trim();
-        for (let i = 0; i < cant; i++) piezas.push({ w, h, nombre: `${nombre} ${i+1}` });
+        const parts = l.split(',');
+        if (parts.length < 2) return;
+        const [w, h] = parts[0].split('x').map(n => parseInt(n.trim()));
+        const cant = parseInt(parts[1]) || 1;
+        const nombre = (parts[2] || "Pieza").trim();
+        for (let i = 0; i < cant; i++) {
+            piezas.push({ w, h, nombre: `${nombre} ${i+1}` });
+        }
     });
 
     piezas.sort((a, b) => (b.w * b.h) - (a.w * a.h));
@@ -37,6 +42,7 @@ async function optimizarCorte() {
                 x += p.w + kerf;
             } else { noCaben.push(p); }
         });
+        if (colocadas.length === 0) break; // Evita bucle infinito si la pieza no cabe en un tablero vacío
         tableros.push(colocadas);
         restantes = noCaben;
     }
@@ -44,7 +50,7 @@ async function optimizarCorte() {
     planActual = { nombre: nomProy, largoT: lT, anchoT: aT, tableros };
     localStorage.setItem('ultimo_plan_corte', JSON.stringify(planActual));
     
-    dibujarTablero(0);
+    window.dibujarTablero(0);
     crearMiniaturas();
     
     if (window.auth?.currentUser) {
@@ -55,7 +61,7 @@ async function optimizarCorte() {
     }
 }
 
-function dibujarTablero(index) {
+window.dibujarTablero = function(index) {
     indiceTableroActual = index;
     const canvas = document.getElementById('canvasCorte');
     const ctx = canvas.getContext('2d');
@@ -70,13 +76,13 @@ function dibujarTablero(index) {
         ctx.fillStyle = "#fbbf24"; ctx.fillRect(p.x*escala, p.y*escala, p.w*escala, p.h*escala);
         ctx.strokeStyle = "#0f172a"; ctx.strokeRect(p.x*escala, p.y*escala, p.w*escala, p.h*escala);
     });
-    document.getElementById('resultadoInfo').innerText = `TABLERO ${index + 1} DE ${planActual.tableros.length}`;
+    document.getElementById('resultadoInfo').innerText = `VISTA: TABLERO ${index + 1} DE ${planActual.tableros.length}`;
 }
 
 function crearMiniaturas() {
     const contenedor = document.getElementById('selectorTableros');
     contenedor.innerHTML = planActual.tableros.map((_, i) => 
-        `<button onclick="dibujarTablero(${i})" class="w-10 h-10 bg-slate-800 text-white rounded-lg font-bold hover:bg-amber-500 transition">${i+1}</button>`
+        `<button onclick="window.dibujarTablero(${i})" class="w-10 h-10 bg-slate-800 text-white rounded-lg font-bold hover:bg-amber-500 transition">${i+1}</button>`
     ).join('');
 }
 
@@ -87,6 +93,7 @@ async function descargarPDF() {
     
     for (let i = 0; i < planActual.tableros.length; i++) {
         if (i > 0) doc.addPage();
+        doc.setFontSize(14);
         doc.text(`TALLERCITO.MX - ${planActual.nombre} (T${i+1})`, 10, 20);
         
         const temp = document.createElement('canvas');
@@ -112,12 +119,12 @@ async function descargarPDF() {
         
         const q = document.createElement("div");
         new QRCode(q, { text: piezas[i].nombre, width: 100, height: 100 });
-        await new Promise(r => setTimeout(r, 60)); // Pausa para estabilidad en Mac
+        await new Promise(r => setTimeout(r, 60)); // Compatibilidad Mac
         const img = q.querySelector("img")?.src;
         if (img) doc.addImage(img, 'PNG', x+60, y+5, 25, 25);
 
         x += 100; if (x > 150) { x = 10; y += 50; }
         if (y > 240 && i < piezas.length - 1) { doc.addPage(); y = 30; }
     }
-    doc.save(`${planActual.nombre}_Tallercito.pdf`);
+    doc.save(`${planActual.nombre}_Produccion.pdf`);
 }
